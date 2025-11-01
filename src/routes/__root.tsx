@@ -1,17 +1,9 @@
-import { NavMenu } from "@shopify/app-bridge-react";
-import { TanStackDevtools } from "@tanstack/react-devtools";
 
-import {
-	createRootRoute,
-	HeadContent,
-	Link,
-	Outlet,
-	Scripts,
-} from "@tanstack/react-router";
-import { TanStackRouterDevtoolsPanel } from "@tanstack/react-router-devtools";
-
-import Header from "../components/Header";
+import { NavMenu,  } from '@shopify/app-bridge-react'
+import { createRootRoute, HeadContent, Link, Outlet, Scripts } from "@tanstack/react-router";
+import { TanStackRouterDevtools} from '@tanstack/react-router-devtools'
 import appCss from "../styles.css?url";
+
 
 const shopifyApiKey = import.meta.env.VITE_SHOPIFY_API_KEY ?? "";
 
@@ -25,6 +17,11 @@ export const Route = createRootRoute({
 			{
 				rel: "preconnect",
 				href: "https://cdn.shopify.com",
+			},
+			{
+				rel: "preload",
+				href: "https://cdn.shopify.com/shopifycloud/polaris.js",
+				as: "script",
 			},
 		],
 		meta: [
@@ -52,45 +49,39 @@ export const Route = createRootRoute({
 			},
 		],
 	}),
-	shellComponent: RootDocument,
+	component: RootComponent,
 });
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+
+function RootComponent() {
 	return (
-		<html lang="en">
-			<head>
-				<HeadContent />
-			</head>
-			<body>
-				<Header />
+	  <RootDocument>
+		<NavMenu>
+		  <Link to="/" rel="home">
+			Home
+		  </Link>
+  
+		  <Link to="/about">About</Link>
+		</NavMenu>
+  
+		<Outlet />
+	  </RootDocument>
+	)
+  }
 
-				<TanStackDevtools
-					config={{
-						position: "bottom-right",
-					}}
-					plugins={[
-						{
-							name: "Tanstack Router",
-							render: <TanStackRouterDevtoolsPanel />,
-						},
-					]}
-				/>
-				<Scripts />
-				<NavMenu>
-					<Link to="/" rel="home">
-						Home
-					</Link>
-
-					<Link to="/demo/start/server-funcs">About</Link>
-					<Link to="/demo/start/api-request">About</Link>
-					<Link to="/demo/api/names">About</Link>
-					<Link to="/demo/start/ssr">About</Link>
-					<Link to="/demo/start/ssr/spa-mode">About</Link>
-					<Link to="/demo/start/ssr/full-ssr">About</Link>
-					<Link to="/demo/start/ssr/data-only">About</Link>
-				</NavMenu>
-				{children}
-			</body>
-		</html>
-	);
-}
+  function RootDocument({ children }: { children: React.ReactNode }) {
+	return (
+	  <html lang='en' suppressHydrationWarning>
+		<head>
+		  <HeadContent />
+		</head>
+  
+		<body>
+		  {children}
+  
+		  <TanStackRouterDevtools position="bottom-right" />
+		  <Scripts />
+		</body>
+	  </html>
+	)
+  }

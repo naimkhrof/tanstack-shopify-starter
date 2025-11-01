@@ -1,33 +1,20 @@
-name = "Localhost App"
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
 client_id = "d3ed6a72ae1417ffaafb3a11b09c063a"
-
-application_url = "https://localhost:3000/"
+name = "tanstackstart"
+application_url = "https://shopify.dev/apps/default-app-home"
 embedded = true
-handle = "localhost"
-
-[access_scopes]
-scopes = "read_products"
-
-[access.admin]
-direct_api_mode = "online"
-
-[auth]
-redirect_urls = [
-  "https://localhost:3000/api/auth/callback",
-  "https://localhost:3000/api/auth/oauth/callback",
-]
-
-[customer_authentication]
-redirect_uris = [
-  "https://localhost:3000/api/customer/auth/callback"
-]
-javascript_origins = [
-  "https://localhost:3000/"
-]
-logout_urls = [
-  "https://localhost:3000/api/customer/logout"
-]
-
 
 [build]
-automatically_update_urls_on_dev = false
+automatically_update_urls_on_dev = true
+include_config_on_deploy = true
+
+[webhooks]
+api_version = "2026-01"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = ""
+
+[auth]
+redirect_urls = [ "https://shopify.dev/apps/default-app-home/api/auth" ]

@@ -10,7 +10,7 @@ function HomeComponent() {
 
   return (
     <s-page>
-		
+     <s-button>oui</s-button>
     </s-page>
   )
 }

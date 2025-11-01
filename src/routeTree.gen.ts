@@ -10,14 +10,11 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ApiAuthRouteImport } from './routes/api/auth/index'
-import { Route as ApiAuthCallbackRouteImport } from './routes/api/auth/callback'
-import { Route as ApiWebhooksAppScopes_updateRouteImport } from './routes/api/webhooks/app/scopes_update'
-import { Route as ApiWebhooksAppUninstalledRouteImport } from './routes/api/webhooks/app/uninstalled'
-import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
+import { Route as ApiAuthRouteImport } from './routes/api/auth'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
 import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
+import { Route as DemoApiDunRouteImport } from './routes/demo/api.dun'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
@@ -33,26 +30,6 @@ const ApiAuthRoute = ApiAuthRouteImport.update({
   path: '/api/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAuthCallbackRoute = ApiAuthCallbackRouteImport.update({
-  id: '/api/auth/callback',
-  path: '/api/auth/callback',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiWebhooksAppScopes_updateRoute = ApiWebhooksAppScopes_updateRouteImport.update({
-  id: '/api/webhooks/app/scopes_update',
-  path: '/api/webhooks/app/scopes_update',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiWebhooksAppUninstalledRoute = ApiWebhooksAppUninstalledRouteImport.update({
-  id: '/api/webhooks/app/uninstalled',
-  path: '/api/webhooks/app/uninstalled',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
-  id: '/demo/drizzle',
-  path: '/demo/drizzle',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
   id: '/demo/start/server-funcs',
   path: '/demo/start/server-funcs',
@@ -66,6 +43,11 @@ const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
 const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
   id: '/demo/api/names',
   path: '/demo/api/names',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DemoApiDunRoute = DemoApiDunRouteImport.update({
+  id: '/demo/api/dun',
+  path: '/demo/api/dun',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
@@ -90,12 +72,9 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
 } as any)
 
 export interface FileRoutesByFullPath {
-  '/api/auth': typeof ApiAuthRoute
-  '/api/auth/callback': typeof ApiAuthCallbackRoute
-  '/api/webhooks/app/scopes_update': typeof ApiWebhooksAppScopes_updateRoute
-  '/api/webhooks/app/uninstalled': typeof ApiWebhooksAppUninstalledRoute
   '/': typeof IndexRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
+  '/api/auth': typeof ApiAuthRoute
+  '/demo/api/dun': typeof DemoApiDunRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
@@ -105,12 +84,9 @@ export interface FileRoutesByFullPath {
   '/demo/start/ssr': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesByTo {
-  '/api/auth': typeof ApiAuthRoute
-  '/api/auth/callback': typeof ApiAuthCallbackRoute
-  '/api/webhooks/app/scopes_update': typeof ApiWebhooksAppScopes_updateRoute
-  '/api/webhooks/app/uninstalled': typeof ApiWebhooksAppUninstalledRoute
   '/': typeof IndexRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
+  '/api/auth': typeof ApiAuthRoute
+  '/demo/api/dun': typeof DemoApiDunRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
@@ -121,12 +97,9 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/api/auth': typeof ApiAuthRoute
-  '/api/auth/callback': typeof ApiAuthCallbackRoute
-  '/api/webhooks/app/scopes_update': typeof ApiWebhooksAppScopes_updateRoute
-  '/api/webhooks/app/uninstalled': typeof ApiWebhooksAppUninstalledRoute
   '/': typeof IndexRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
+  '/api/auth': typeof ApiAuthRoute
+  '/demo/api/dun': typeof DemoApiDunRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/start/api-request': typeof DemoStartApiRequestRoute
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
@@ -140,10 +113,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/api/auth'
-    | '/api/auth/callback'
-    | '/api/webhooks/app/scopes_update'
-    | '/api/webhooks/app/uninstalled'
-    | '/demo/drizzle'
+    | '/demo/api/dun'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
@@ -155,10 +125,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/api/auth'
-    | '/api/auth/callback'
-    | '/api/webhooks/app/scopes_update'
-    | '/api/webhooks/app/uninstalled'
-    | '/demo/drizzle'
+    | '/demo/api/dun'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
@@ -168,12 +135,9 @@ export interface FileRouteTypes {
     | '/demo/start/ssr'
   id:
     | '__root__'
-    | '/api/auth'
-    | '/api/auth/callback'
-    | '/api/webhooks/app/scopes_update'
-    | '/api/webhooks/app/uninstalled'
     | '/'
-    | '/demo/drizzle'
+    | '/api/auth'
+    | '/demo/api/dun'
     | '/demo/api/names'
     | '/demo/start/api-request'
     | '/demo/start/server-funcs'
@@ -184,12 +148,9 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  ApiAuthRoute: typeof ApiAuthRoute
-  ApiAuthCallbackRoute: typeof ApiAuthCallbackRoute
-  ApiWebhooksAppScopes_updateRoute: typeof ApiWebhooksAppScopes_updateRoute
-  ApiWebhooksAppUninstalledRoute: typeof ApiWebhooksAppUninstalledRoute
   IndexRoute: typeof IndexRoute
-  DemoDrizzleRoute: typeof DemoDrizzleRoute
+  ApiAuthRoute: typeof ApiAuthRoute
+  DemoApiDunRoute: typeof DemoApiDunRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
@@ -215,34 +176,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/auth/callback': {
-      id: '/api/auth/callback'
-      path: '/api/auth/callback'
-      fullPath: '/api/auth/callback'
-      preLoaderRoute: typeof ApiAuthCallbackRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/webhooks/app/scopes_update': {
-      id: '/api/webhooks/app/scopes_update'
-      path: '/api/webhooks/app/scopes_update'
-      fullPath: '/api/webhooks/app/scopes_update'
-      preLoaderRoute: typeof ApiWebhooksAppScopes_updateRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/webhooks/app/uninstalled': {
-      id: '/api/webhooks/app/uninstalled'
-      path: '/api/webhooks/app/uninstalled'
-      fullPath: '/api/webhooks/app/uninstalled'
-      preLoaderRoute: typeof ApiWebhooksAppUninstalledRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/drizzle': {
-      id: '/demo/drizzle'
-      path: '/demo/drizzle'
-      fullPath: '/demo/drizzle'
-      preLoaderRoute: typeof DemoDrizzleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/demo/start/server-funcs': {
       id: '/demo/start/server-funcs'
       path: '/demo/start/server-funcs'
@@ -262,6 +195,13 @@ declare module '@tanstack/react-router' {
       path: '/demo/api/names'
       fullPath: '/demo/api/names'
       preLoaderRoute: typeof DemoApiNamesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/demo/api/dun': {
+      id: '/demo/api/dun'
+      path: '/demo/api/dun'
+      fullPath: '/demo/api/dun'
+      preLoaderRoute: typeof DemoApiDunRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/start/ssr/': {
@@ -296,12 +236,9 @@ declare module '@tanstack/react-router' {
 }
 
 const rootRouteChildren: RootRouteChildren = {
-  ApiAuthRoute: ApiAuthRoute,
-  ApiAuthCallbackRoute: ApiAuthCallbackRoute,
-  ApiWebhooksAppScopes_updateRoute: ApiWebhooksAppScopes_updateRoute,
-  ApiWebhooksAppUninstalledRoute: ApiWebhooksAppUninstalledRoute,
   IndexRoute: IndexRoute,
-  DemoDrizzleRoute: DemoDrizzleRoute,
+  ApiAuthRoute: ApiAuthRoute,
+  DemoApiDunRoute: DemoApiDunRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,

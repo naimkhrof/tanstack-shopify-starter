@@ -41,6 +41,9 @@
     "vite-tsconfig-paths": "^5.1.4"
   },
   "devDependencies": {
+    "@shopify/api-codegen-preset": "^1.2.0",
+    "@shopify/app-bridge-types": "^0.5.3",
+    "@shopify/app-bridge-ui-types": "^0.3.3",
     "@biomejs/biome": "2.2.4",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.2.0",
@@ -55,6 +58,6 @@
     "typescript": "^5.7.2",
     "vite": "^7.1.7",
     "vitest": "^3.0.5",
-    "web-vitals": "^5.1.0",
+    "web-vitals": "^5.1.0"
   }
 }

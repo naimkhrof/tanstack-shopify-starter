@@ -1,11 +1,10 @@
-import { env } from "cloudflare:workers";
 import { createFileRoute } from '@tanstack/react-router'
-import { getDb } from '@/db'
+import { json } from '@tanstack/react-start'
 
 export const Route = createFileRoute('/demo/api/dun')({
   server: {
     handlers: {
-      GET: () => getDb()
+      GET: () => json([])
     },
   },
 })
