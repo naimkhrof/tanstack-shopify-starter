@@ -1,16 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
 
+import { getDbFromContext } from '@/lib/cloudflare/env'
 import { deleteSession } from '@/lib/shopify/session'
 import { verifyWebhook, ShopifyWebhookError } from '@/lib/shopify/webhooks'
 
 export const Route = createFileRoute('/api/webhooks/app/uninstalled')({
   server: {
     handlers: {
-      POST: async ({ request }) => {
+      POST: async ({ request, context }) => {
         try {
           const { shop, topic } = await verifyWebhook(request)
 
-          await deleteSession(shop)
+          const { db } = getDbFromContext(context)
+
+          await deleteSession(db, shop)
 
           console.info(`Processed ${topic} webhook for ${shop}`)
 

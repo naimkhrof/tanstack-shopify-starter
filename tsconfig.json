@@ -5,8 +5,8 @@
     "jsx": "react-jsx",
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
-    "types": ["vite/client", "shopify-app-bridge-types", "shopify-polaris-types"],
-
+    "types": ["vite/client"],
+    
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,

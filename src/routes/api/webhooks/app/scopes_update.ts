@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 
+import { getDbFromContext } from '@/lib/cloudflare/env'
 import { updateSessionScope } from '@/lib/shopify/session'
 import { ShopifyWebhookError, verifyWebhook } from '@/lib/shopify/webhooks'
 
@@ -10,7 +11,7 @@ type ScopesUpdatePayload = {
 export const Route = createFileRoute('/api/webhooks/app/scopes_update')({
   server: {
     handlers: {
-      POST: async ({ request }) => {
+      POST: async ({ request, context }) => {
         try {
           const { shop, topic, payload } = await verifyWebhook<ScopesUpdatePayload>(request)
 
@@ -19,7 +20,8 @@ export const Route = createFileRoute('/api/webhooks/app/scopes_update')({
             : ''
 
           if (currentScopes) {
-            await updateSessionScope(shop, currentScopes)
+            const { db } = getDbFromContext(context)
+            await updateSessionScope(db, shop, currentScopes)
           }
 
           console.info(`Processed ${topic} webhook for ${shop}`)

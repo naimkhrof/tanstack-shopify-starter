@@ -1,6 +1,6 @@
 import { eq } from 'drizzle-orm'
 
-import { db } from '@/db'
+import type { DbClient } from '@/db/client'
 import { shopifySessions } from '@/db/schema'
 
 export type ShopifySession = {
@@ -9,14 +9,16 @@ export type ShopifySession = {
   expiresAt?: string | null
 }
 
-export async function saveSession(shop: string, session: ShopifySession) {
+export async function saveSession(db: DbClient, shop: string, session: ShopifySession) {
+  const expiresAt = session.expiresAt ? new Date(session.expiresAt) : null
+
   await db
     .insert(shopifySessions)
     .values({
       shop,
       accessToken: session.accessToken,
       scope: session.scope,
-      expiresAt: session.expiresAt ? new Date(session.expiresAt) : null,
+      expiresAt,
       updatedAt: new Date(),
     })
     .onConflictDoUpdate({
@@ -24,13 +26,13 @@ export async function saveSession(shop: string, session: ShopifySession) {
       set: {
         accessToken: session.accessToken,
         scope: session.scope,
-        expiresAt: session.expiresAt ? new Date(session.expiresAt) : null,
+        expiresAt,
         updatedAt: new Date(),
       },
     })
 }
 
-export async function getSession(shop: string) {
+export async function getSession(db: DbClient, shop: string) {
   const [record] = await db
     .select()
     .from(shopifySessions)
@@ -51,11 +53,11 @@ export async function getSession(shop: string) {
   } satisfies ShopifySession
 }
 
-export async function deleteSession(shop: string) {
+export async function deleteSession(db: DbClient, shop: string) {
   await db.delete(shopifySessions).where(eq(shopifySessions.shop, shop))
 }
 
-export async function listSessions() {
+export async function listSessions(db: DbClient) {
   const records = await db.select().from(shopifySessions)
   return records.map((record) => ({
     shop: record.shop,
@@ -71,7 +73,7 @@ export async function listSessions() {
   }))
 }
 
-export async function updateSessionScope(shop: string, scope: string) {
+export async function updateSessionScope(db: DbClient, shop: string, scope: string) {
   await db
     .update(shopifySessions)
     .set({ scope, updatedAt: new Date() })

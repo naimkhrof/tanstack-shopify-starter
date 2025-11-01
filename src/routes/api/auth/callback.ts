@@ -2,6 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { json } from '@tanstack/react-start'
 import { createHmac, timingSafeEqual } from 'node:crypto'
 
+import type { DbClient } from '@/db/client'
+import { getDbFromContext } from '@/lib/cloudflare/env'
 import { saveSession, type ShopifySession } from '@/lib/shopify/session'
 import { consumeState } from '@/lib/shopify/state'
 import { normalizeShopDomain } from '@/lib/shopify/shop'
@@ -56,7 +58,7 @@ function verifyHmac(searchParams: URLSearchParams) {
 export const Route = createFileRoute('/api/auth/callback')({
   server: {
     handlers: {
-      GET: async ({ request }) => {
+      GET: async ({ request, context }) => {
         if (!apiKey || !apiSecret) {
           return json(
             {
@@ -127,7 +129,16 @@ export const Route = createFileRoute('/api/auth/callback')({
               : null),
         }
 
-        await saveSession(shop, session)
+        let db: DbClient
+        try {
+          const contextResult = getDbFromContext(context)
+          db = contextResult.db
+        } catch (error) {
+          console.error('Missing Cloudflare environment bindings for database access', error)
+          return json({ error: 'Database bindings are not configured.' }, { status: 500 })
+        }
+
+        await saveSession(db, shop, session)
 
         const redirectUrl = new URL('/', url.origin)
         redirectUrl.searchParams.set('shop', shop)

@@ -1,12 +1,15 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import { db } from '@/db'
 import { desc } from 'drizzle-orm'
+
+import { getDbFromContext } from '@/lib/cloudflare/env'
 import { todos } from '@/db/schema'
 
 const getTodos = createServerFn({
   method: 'GET',
-}).handler(async () => {
+}).handler(async ({ context }) => {
+  const { db } = getDbFromContext(context)
+
   return await db.query.todos.findMany({
     orderBy: [desc(todos.createdAt)],
   })
@@ -16,7 +19,9 @@ const createTodo = createServerFn({
   method: 'POST',
 })
   .inputValidator((data: { title: string }) => data)
-  .handler(async ({ data }) => {
+  .handler(async ({ data, context }) => {
+    const { db } = getDbFromContext(context)
+
     await db.insert(todos).values({ title: data.title })
     return { success: true }
   })

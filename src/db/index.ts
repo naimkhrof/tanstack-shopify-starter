@@ -1,26 +1,9 @@
-import { config } from 'dotenv'
+import { neon } from "@neondatabase/serverless";
+import { config } from "dotenv";
+import { drizzle } from "drizzle-orm/neon-http";
 
-import { drizzle } from 'drizzle-orm/node-postgres'
-import { Pool } from 'pg'
+config({ path: ".env" }); // or .env.local
 
-import * as schema from './schema'
+const sql = neon(process.env.DATABASE_URL!);
 
-config()
-
-const connectionString = process.env.DATABASE_URL
-
-if (!connectionString) {
-  throw new Error('DATABASE_URL must be defined to initialize the database connection.')
-}
-
-const pool = new Pool({
-  connectionString,
-  ssl:
-    process.env.DATABASE_SSL_MODE === 'require'
-      ? {
-          rejectUnauthorized: process.env.DATABASE_SSL_REJECT_UNAUTHORIZED !== 'false',
-        }
-      : undefined,
-})
-
-export const db = drizzle(pool, { schema })
+export const db = drizzle({ client: sql });
